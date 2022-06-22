@@ -1,11 +1,28 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Input } from '../components';;
+
 
 const Dashboard = () => {
+
+  
+  const [funcion, setFuncion] = useState("");
+  
+  const handleInputChange = (e) => setFuncion(e.target.value);
+
+
+
+
+  
   return (
     <section className='mt-20 w-full p-10 relative'>
       <div className='w-full'>
-        <button className='bg-green-500 p-2 rounded-lg   text-white'>Crear Nuevo ejercicio</button>
-        
+        <form>
+        <Input
+            id="funcion" name="funcion" type="text" text="Funcion" placeholder="x^2"
+            onChange={handleInputChange} value={funcion}      
+          />
+          <button className='bg-green-500 p-2 rounded-lg   text-white'>Crear Nuevo ejercicio</button>
+        </form>
 
 
 
@@ -35,7 +52,7 @@ const Dashboard = () => {
                         <div>
                           <button className='btn-action'>Ver ejercicio</button>
                         </div>
-                        <div>w
+                        <div>
                           <button className='btn-action'>Modificar ejercicio</button>
                         </div>
                         <div>

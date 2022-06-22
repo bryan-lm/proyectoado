@@ -17,7 +17,7 @@ const TableElement = () => {
                           <button className='btn-action'>Probar Ejercicio</button>
                         </div>
 
-    </td>
+                      </td>
   )
 }
 
