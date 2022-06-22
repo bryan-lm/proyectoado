@@ -11,7 +11,7 @@ import java.sql.SQLException;
   
 // This class can be used to initialize the database connection
 public class BaseDeDatos {
-    protected static Connection initializeDatabase()
+    protected static Connection initializeDatabase(String dbName)
         throws SQLException, ClassNotFoundException
     {
         // Initialize all the information regarding
@@ -19,7 +19,9 @@ public class BaseDeDatos {
         String dbDriver = "com.mysql.jdbc.Driver";
         String dbURL = "jdbc:mysql://localhost:3306/";
         // Database name to access
-        String dbName = "proyecto";
+        if(dbName.isEmpty()) {
+            dbName = "proyecto";
+        }
         String dbUsername = "root";
         String dbPassword = "root";
   

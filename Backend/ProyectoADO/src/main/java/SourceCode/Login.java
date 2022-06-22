@@ -6,13 +6,15 @@
 package SourceCode;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import java.sql.Connection;
+import java.sql.ResultSet;
 /**
  *
  * @author bryan
@@ -29,29 +31,47 @@ public class Login extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    private String crearJSON(String usuario) {
+        StringBuilder json = new StringBuilder();
+        
+        json.append("[");
+        json.append("{");
+        json.append(usuario);
+        json.append("}");
+        json.append("]");
+        return json.toString();
+    }
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Login</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Login at " + request.getContextPath() + "</h1>");
-            out.println("<form action=\"./Conexion\" method=\"post\">");
-            out.println("<p>Usuario:</p>");
-            out.println("<input type=\"text\" name=\"usuario\"/>");
-            out.println("<br/>");
-            out.println("<p>Contraseña:</p> ");
-            out.println("<input type=\"text\" name=\"contrasenia\"/>");
-            out.println("<br/><br/><br/>");
-            out.println("<input type=\"submit\"/>");
-            out.println("</body>");
-            out.println("</html>");
+        try {
+            response.setContentType("application/json");
+            try (PrintWriter out = response.getWriter()) {
+                // Initialize the database
+                Connection con = BaseDeDatos.initializeDatabase("proyecto");
+
+                final String queryCheck = "SELECT * from usuarios WHERE nombre = ? AND contrasenia = ?";
+                final PreparedStatement ps = con.prepareStatement(queryCheck);
+                System.out.println(request.getParameter("user"));
+                System.out.println(request.getParameter("pass"));
+                ps.setString(1, request.getParameter("user"));
+                ps.setString(2, request.getParameter("pass"));
+                final ResultSet resultSet = ps.executeQuery();
+                if(resultSet.next()) {
+                    System.out.println("1");
+                    out.write(crearJSON(request.getParameter("user")));
+                } else {
+                    System.out.println("2");
+                    out.write("NULL");
+                }
+                // Close all the connections
+                ps.close();
+                con.close();
+            }
+        } catch(Exception e){
+            e.printStackTrace(); 
         }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
