@@ -1,3 +1,5 @@
 import Input from "./Input";
 import Header from "./Header";
-export {Input, Header}
+import TableElement from "./TableElement";
+
+export {Input, Header, TableElement}

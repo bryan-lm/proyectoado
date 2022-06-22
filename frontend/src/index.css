@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components{
+    .btn-action{
+        @apply bg-green-500 px-5 py-3 text-white font-semibold hover:bg-green-800
+    }
+}
